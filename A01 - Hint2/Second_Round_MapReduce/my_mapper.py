@@ -20,9 +20,7 @@ import codecs
 # ------------------------------------------
 def my_map(input_stream, per_language_or_project, output_stream):
     results={}
-    fileContents = input_stream.read()
-    fileContents = fileContents.splitlines()
-    for line in fileContents:
+    for line in input_stream:
         lineContents=line.split(" ")
         #projLang will be the key ie en,fr or m,wikipeida
         projLang=""

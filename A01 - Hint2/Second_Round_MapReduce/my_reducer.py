@@ -19,10 +19,8 @@ import codecs
 # FUNCTION my_reduce
 # ------------------------------------------
 def my_reduce(input_stream, total_petitions, output_stream):
-    fileContents = input_stream.read()
-    fileContents = fileContents.splitlines()
     results={}
-    for line in fileContents:
+    for line in input_stream:
         lineContents=line.split("\t")
         
         if lineContents[0] not in results:

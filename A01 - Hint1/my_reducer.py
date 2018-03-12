@@ -23,20 +23,19 @@ import codecs
 # ------------------------------------------
 def my_reduce(input_stream, num_top_entries, output_stream):
      #Read data from file and split them by new line char
-    fileContents =input_stream.read()
-    fileContents = fileContents.splitlines()
+   
     
     
     
     results = {}
-    for line in fileContents:
+    for line in input_stream.readlines():
         #Split the line into 2. First half containing the language/project
         #The second half containing the tuple
         lineContents = line.split("\t")
         
         #If a language/project does not exist in the results dictionary then add it        
         if lineContents[0] not in results:
-            results[lineContents[0]] = []
+            results[lineContents[0]] = [("",0),("",0),("",0),("",0),("",0)]
         
     
         #Read the tuple data in from the file
@@ -52,18 +51,22 @@ def my_reduce(input_stream, num_top_entries, output_stream):
         tupleInfo[0] = tupleInfo[0].replace("(","")
         tupleInfo[1] = tupleInfo[1].replace(")","")
         
+        if results[lineContents[0]][4][1]<int(tupleInfo[1]):
+                    results[lineContents[0]][4] = (tupleInfo[0],int(tupleInfo[1]))
+                    results[lineContents[0]] = sorted(results[lineContents[0]], key=lambda value:value[1], reverse=True)
+    
         #Add the tuple to a list of tuples that are under the language/project key in the results
-        results[lineContents[0]].append((tupleInfo[0],int(tupleInfo[1])))    
+        #results[lineContents[0]].append((tupleInfo[0],int(tupleInfo[1])))    
    
     #Sort the results by the page hit number(second element) of the tuple
-    for key in results:
-        results[key] = sorted(results[key], key=lambda value:value[1] , reverse=True)
+   # for key in results:
+   #     results[key] = sorted(results[key], key=lambda value:value[1] , reverse=True)
     
     
     #Write the top 5 entries for each language/project key to the output file
     for key in results: 
         for index in range(0,num_top_entries):
-            if len(results[key])>index:
+            if len(results[key])>index and results[key][index][1]>0:
                     output = key+"\t("+results[key][index][0] +","+ str(results[key][index][1])+")\n"
                     output_stream.write(output)
     pass

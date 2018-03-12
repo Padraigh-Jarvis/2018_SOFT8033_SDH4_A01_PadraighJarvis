@@ -19,10 +19,8 @@ import sys
 # FUNCTION my_map
 # ------------------------------------------
 def my_map(input_stream, output_stream):
-    fileContents = input_stream.read()
-    fileContents = fileContents.splitlines()
     total=0;
-    for line in fileContents:
+    for line in input_stream:
         lineContents=line.split(" ")
         if lineContents[0] == "0":
             #True if R to L language

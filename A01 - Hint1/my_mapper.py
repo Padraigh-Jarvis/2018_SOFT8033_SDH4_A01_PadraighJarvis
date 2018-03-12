@@ -22,20 +22,14 @@ import codecs
 # FUNCTION my_map
 # ------------------------------------------
 def my_map(input_stream, languages, num_top_entries, output_stream):
-      #Create dictionaries needed for the mapper 
+    #Create dictionaries needed for the mapper 
     results = {}
     for language in languages:
         results[language]={}
  
-
-    #Put the contents of the file into a string    
-    fileContents = input_stream.read()
-
-    #Then split that string by new line char into a list of lines
-    fileContents = fileContents.splitlines() 
-    
-    for line in fileContents:
+    for line in input_stream:
         #Then split line by white space
+
         lineContents = line.split(" ")
         #if will check if the line is an right to left language 
         if lineContents[0] is 0:
@@ -47,20 +41,26 @@ def my_map(input_stream, languages, num_top_entries, output_stream):
                 #Check if the project key exists in the dictionary.
                 if lineContents[0] not in results[language]:
                     #Create new list
-                    results[language][lineContents[0]] = []
+                    results[language][lineContents[0]] = [("",0),("",0),("",0),("",0),("",0)]
                 #Add new data to list
-                results[language][lineContents[0]].append((lineContents[1],int(lineContents[2])))
+                
+                if results[language][lineContents[0]][4][1]<int(lineContents[2]):
+                    results[language][lineContents[0]][4] = (lineContents[1],int(lineContents[2]))
+                    results[language][lineContents[0]] = sorted(results[language][lineContents[0]], key=lambda value:value[1], reverse=True)
     
+    
+    #print(results["en"])
     #Begin output process   
     for language in languages:
         for projectKey in results[language]:
             #Sort the list based on the value (ie [1]) of the tuple in accending order
-            sortedResults = sorted(results[language][projectKey] , key=lambda value:value[1] , reverse=True)
+            
+            #sortedResults = sorted(results[language][projectKey] , key=lambda value:value[1] , reverse=True)
             #Range used for getting the top n results
             for index in range(0,num_top_entries):
                 #If to make sure the project has enough items.
-                if len(sortedResults)>index:
-                    output = projectKey+"\t("+sortedResults[index][0]+","+str(sortedResults[index][1])+")\n"
+                if len(results[language][projectKey])>index and results[language][projectKey][index][1]>0:
+                    output = projectKey+"\t("+results[language][projectKey][index][0]+","+str(results[language][projectKey][index][1])+")\n"
                     output_stream.write(output)
         
             

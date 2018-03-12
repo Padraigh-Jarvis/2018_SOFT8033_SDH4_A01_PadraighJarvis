@@ -19,10 +19,8 @@ import codecs
 # FUNCTION my_reduce
 # ------------------------------------------
 def my_reduce(input_stream, output_stream):
-    fileContents = input_stream.read()
-    fileContents = fileContents.splitlines()
     total=0
-    for line in fileContents:
+    for line in input_stream:
         if line:
             lineContents = line.split("\t")
             total=total+int(lineContents[1])
