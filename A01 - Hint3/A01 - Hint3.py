@@ -43,7 +43,9 @@ def my_groupBy(x):
 # FUNCTION my_sort
 # ------------------------------------------
 def my_sort(x):
-  res = [("",0),("",0),("",0),("",0),("",0)]
+  res = []
+  for i in range(0,num_top_entries):
+    res.append(("",0))
   for ele in x:
     split = ele.split(", ")
     pageViews =int(split[1].replace(")","",1)) 
